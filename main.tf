@@ -5,6 +5,7 @@ variable "user_ocid" {}
 variable "fingerprint" {}
 variable "private_key_path" {}
 variable "admin_password" {}
+variable "wallet" {}
 
 provider "oci" {
   tenancy_ocid = var.tenancy_ocid
@@ -49,7 +50,7 @@ variable "autonomous_database_is_dedicated" {
 
 resource "oci_database_autonomous_database_wallet" "autonomous_database_wallet" {
   autonomous_database_id = oci_database_autonomous_database.autonomous_database.id
-  password               = "Welcome123456"
+  password               = var.wallet
   base64_encode_content  = "true"
 }
 
