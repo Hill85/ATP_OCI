@@ -1,0 +1,61 @@
+variable "compartment_ocid" {}
+variable "region" {}
+variable "tenancy_ocid" {}
+variable "user_ocid" {}
+variable "fingerprint" {}
+variable "private_key_path" {}
+
+provider "oci" {
+  tenancy_ocid = var.tenancy_ocid
+  user_ocid = var.user_ocid
+  fingerprint = var.fingerprint
+  private_key = var.private_key
+  region = var.region
+}
+
+variable "ad_region_mapping" {
+  type = map(string)
+
+  default = {
+    sa-saopaulo-1 = 1
+  }
+}
+
+data "oci_identity_availability_domain" "ad" {
+  compartment_id = var.tenancy_ocid
+  ad_number      = var.ad_region_mapping[var.region]
+}
+
+
+variable "db_workload" {
+  default = "OLTP"
+}
+
+variable "autonomous_database_defined_tags_value" {
+  default = "value"
+}
+variable "autonomous_database_freeform_tags" {
+  default = {
+    "Department" = "RH"
+  }
+}
+variable "autonomous_database_license_model" {
+  default = "LICENSE_INCLUDED"
+}
+variable "autonomous_database_is_dedicated" {
+  default = false
+
+}
+
+resource "oci_database_autonomous_database" "autonomous_database" {  
+  admin_password           = "Welcome123456"
+  compartment_id           = var.compartment_ocid
+  cpu_core_count           = "1"
+  data_storage_size_in_tbs = "1"
+  db_name                  = "dbrh"
+  is_free_tier             = true  
+  db_workload                                    = var.db_workload
+  display_name                                   = "Projeto Final OCI"
+  is_auto_scaling_enabled                        = "false"
+  is_preview_version_with_service_terms_accepted = "false"
+}
