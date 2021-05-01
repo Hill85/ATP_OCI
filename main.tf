@@ -4,6 +4,7 @@ variable "tenancy_ocid" {}
 variable "user_ocid" {}
 variable "fingerprint" {}
 variable "private_key_path" {}
+variable "admin_password" {}
 
 provider "oci" {
   tenancy_ocid = var.tenancy_ocid
@@ -31,24 +32,24 @@ variable "db_workload" {
   default = "OLTP"
 }
 
-variable "autonomous_database_defined_tags_value" {
-  default = "value"
-}
+
 variable "autonomous_database_freeform_tags" {
   default = {
     "Department" = "RH"
   }
 }
+
 variable "autonomous_database_license_model" {
   default = "LICENSE_INCLUDED"
 }
+
 variable "autonomous_database_is_dedicated" {
   default = false
 
 }
 
 resource "oci_database_autonomous_database" "autonomous_database" {  
-  admin_password           = "Welcome123456"
+  admin_password           = var.admin_password
   compartment_id           = var.compartment_ocid
   cpu_core_count           = "1"
   data_storage_size_in_tbs = "1"
@@ -58,4 +59,19 @@ resource "oci_database_autonomous_database" "autonomous_database" {
   display_name                                   = "Projeto Final OCI"
   is_auto_scaling_enabled                        = "false"
   is_preview_version_with_service_terms_accepted = "false"
+  license_model = var.autonomous_database_license_model
+  is_dedicated = var.autonomous_database_is_dedicated
+  freeform_tags = var.autonomous_database_freeform_tags
+}
+
+
+
+data "oci_database_autonomous_databases" "autonomous_databases" {  
+  compartment_id = var.compartment_ocid
+  display_name = oci_database_autonomous_database.autonomous_database.display_name
+  db_workload  = var.db_workload
+}
+
+output "autonomous_databases" {
+  value = data.oci_database_autonomous_databases.autonomous_databases.autonomous_databases
 }
