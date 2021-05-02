@@ -5,7 +5,7 @@ variable "user_ocid" {}
 variable "fingerprint" {}
 variable "private_key_path" {}
 variable "admin_password" {}
-variable "wallet" {}
+#variable "wallet" {}
 
 provider "oci" {
   tenancy_ocid = var.tenancy_ocid
@@ -27,6 +27,9 @@ data "oci_identity_availability_domain" "ad" {
   compartment_id = var.tenancy_ocid
   ad_number      = var.ad_region_mapping[var.region]
 }
+
+/*
+
 
 variable "db_workload" {
   default = "OLTP"
@@ -77,6 +80,4 @@ output "autonomous_databases" {
   value = data.oci_database_autonomous_databases.autonomous_databases.autonomous_databases
 }
 
-output "autonomous_database_high_connection_string" {
-  value = lookup(oci_database_autonomous_database.autonomous_database.connection_strings.0.all_connection_strings, "high", "unavailable")
-}
+*/
