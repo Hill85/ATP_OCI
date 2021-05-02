@@ -29,6 +29,8 @@ data "oci_identity_availability_domain" "ad" {
 }
 
 
+/*
+
 variable "db_workload" {
   default = "OLTP"
 }
@@ -79,3 +81,4 @@ output "autonomous_databases" {
 }
 
 
+*/
