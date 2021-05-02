@@ -28,8 +28,6 @@ data "oci_identity_availability_domain" "ad" {
   ad_number      = var.ad_region_mapping[var.region]
 }
 
-/*
-
 
 variable "db_workload" {
   default = "OLTP"
@@ -80,4 +78,4 @@ output "autonomous_databases" {
   value = data.oci_database_autonomous_databases.autonomous_databases.autonomous_databases
 }
 
-*/
+
